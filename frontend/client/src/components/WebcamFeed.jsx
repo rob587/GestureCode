@@ -1,67 +1,65 @@
+// GestureCode — Componente WebcamFeed
+// Il <video> è SEMPRE nel DOM (anche durante loading/errore), altrimenti
+// il ref non è disponibile quando useMediaPipe prova ad accedervi.
+
 import { useMediaPipe } from "../hooks/useMediaPipe.js";
 
 export function WebcamFeed() {
   const { videoRef, fps, isReady, handDetected, error } = useMediaPipe();
 
-  // --- Stato errore ---
-  if (error) {
-    return (
-      <div style={styles.container}>
-        <div style={styles.errorBox}>
-          <div style={styles.errorEmoji}>⚠️</div>
-          <div style={styles.errorTitle}>Impossibile avviare la webcam</div>
-          <div style={styles.errorText}>
-            {error.name === "NotAllowedError"
-              ? "Hai negato il permesso. Ricarica la pagina e concedi l'accesso alla webcam."
-              : error.message || "Errore sconosciuto."}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // --- Stato loading ---
-  if (!isReady) {
-    return (
-      <div style={styles.container}>
-        <div style={styles.loadingBox}>
-          <div style={styles.spinner} />
-          <div style={styles.loadingText}>Avvio webcam e modello...</div>
-        </div>
-      </div>
-    );
-  }
-
-  // --- Stato pronto ---
   return (
     <div style={styles.container}>
       <div style={styles.videoWrapper}>
+        {/* Video SEMPRE presente nel DOM */}
         <video ref={videoRef} style={styles.video} autoPlay playsInline muted />
 
-        {/* HUD in alto a sinistra */}
-        <div style={styles.hud}>
-          <div style={styles.hudRow}>
-            <span style={styles.hudLabel}>FPS</span>
-            <span style={styles.hudValue}>{fps}</span>
+        {/* Overlay di caricamento */}
+        {!isReady && !error && (
+          <div style={styles.overlay}>
+            <div style={styles.spinner} />
+            <div style={styles.overlayText}>Avvio webcam e modello...</div>
           </div>
-          <div style={styles.hudRow}>
-            <span style={styles.hudLabel}>Mano</span>
-            <span
-              style={{
-                ...styles.hudValue,
-                color: handDetected ? "#4ade80" : "#f87171",
-              }}
-            >
-              {handDetected ? "● rilevata" : "○ assente"}
-            </span>
+        )}
+
+        {/* Overlay di errore */}
+        {error && (
+          <div style={styles.overlay}>
+            <div style={styles.errorEmoji}>⚠️</div>
+            <div style={styles.errorTitle}>Impossibile avviare la webcam</div>
+            <div style={styles.errorText}>
+              {error.name === "NotAllowedError"
+                ? "Hai negato il permesso. Ricarica la pagina e concedi l'accesso alla webcam."
+                : error.message || "Errore sconosciuto."}
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* HUD quando è pronto */}
+        {isReady && (
+          <div style={styles.hud}>
+            <div style={styles.hudRow}>
+              <span style={styles.hudLabel}>FPS</span>
+              <span style={styles.hudValue}>{fps}</span>
+            </div>
+            <div style={styles.hudRow}>
+              <span style={styles.hudLabel}>Mano</span>
+              <span
+                style={{
+                  ...styles.hudValue,
+                  color: handDetected ? "#4ade80" : "#f87171",
+                }}
+              >
+                {handDetected ? "● rilevata" : "○ assente"}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-//provvisorio
+// --- Stili ---
 
 const styles = {
   container: {
@@ -83,6 +81,48 @@ const styles = {
     objectFit: "cover",
     transform: "scaleX(-1)",
   },
+
+  // Overlay generico (loading / errore)
+  overlay: {
+    position: "absolute",
+    inset: 0,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 16,
+    background: "rgba(0, 0, 0, 0.85)",
+    padding: 24,
+    textAlign: "center",
+  },
+  spinner: {
+    width: 32,
+    height: 32,
+    border: "3px solid rgba(255,255,255,0.1)",
+    borderTopColor: "#4ade80",
+    borderRadius: "50%",
+    animation: "spin 1s linear infinite",
+  },
+  overlayText: {
+    color: "#9ca3af",
+    fontFamily: "monospace",
+    fontSize: 13,
+  },
+  errorEmoji: {
+    fontSize: 40,
+  },
+  errorTitle: {
+    color: "#f87171",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  errorText: {
+    color: "#9ca3af",
+    fontSize: 13,
+    maxWidth: 400,
+  },
+
+  // HUD
   hud: {
     position: "absolute",
     top: 12,
@@ -110,57 +150,5 @@ const styles = {
   hudValue: {
     fontWeight: "bold",
     color: "#e5e7eb",
-  },
-
-  // Loading
-  loadingBox: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    aspectRatio: "4 / 3",
-    background: "#0a0a0a",
-    borderRadius: 12,
-    gap: 16,
-  },
-  spinner: {
-    width: 32,
-    height: 32,
-    border: "3px solid rgba(255,255,255,0.1)",
-    borderTopColor: "#4ade80",
-    borderRadius: "50%",
-    animation: "spin 1s linear infinite",
-  },
-  loadingText: {
-    color: "#9ca3af",
-    fontFamily: "monospace",
-    fontSize: 13,
-  },
-
-  // Errore
-  errorBox: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    aspectRatio: "4 / 3",
-    background: "#0a0a0a",
-    borderRadius: 12,
-    gap: 12,
-    padding: 24,
-    textAlign: "center",
-  },
-  errorEmoji: {
-    fontSize: 40,
-  },
-  errorTitle: {
-    color: "#f87171",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  errorText: {
-    color: "#9ca3af",
-    fontSize: 13,
-    maxWidth: 400,
   },
 };

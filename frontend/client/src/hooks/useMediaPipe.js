@@ -43,11 +43,12 @@ export function useMediaPipe() {
 
     async function init() {
       try {
-        // 1. Webcam
+        console.log("[MP] 1. richiedo webcam...");
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { width: 640, height: 480, facingMode: "user" },
           audio: false,
         });
+        console.log("[MP] 2. webcam OK");
 
         if (cancelled) {
           stream.getTracks().forEach((t) => t.stop());
@@ -56,16 +57,26 @@ export function useMediaPipe() {
 
         streamRef.current = stream;
 
-        if (!videoRef.current) return;
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
+        if (!videoRef.current) {
+          console.log("[MP] ❌ videoRef.current è NULL");
+          return;
+        }
 
-        // 2. MediaPipe HandLandmarker
+        videoRef.current.srcObject = stream;
+        console.log("[MP] 3. srcObject assegnato, chiamo play()...");
+
+        await videoRef.current.play();
+        console.log("[MP] 4. ✅ video.play() risolto");
+
+        console.log("[MP] 5. carico WASM...");
         const vision = await FilesetResolver.forVisionTasks(WASM_URL);
+        console.log("[MP] 6. ✅ WASM caricato");
+
+        console.log("[MP] 7. carico modello + creo landmarker...");
         const landmarker = await HandLandmarker.createFromOptions(vision, {
           baseOptions: {
             modelAssetPath: MODEL_URL,
-            delegate: "GPU", // fallback a CPU se GPU non disponibile
+            delegate: "GPU",
           },
           runningMode: "VIDEO",
           numHands: 1,
@@ -73,6 +84,7 @@ export function useMediaPipe() {
           minHandPresenceConfidence: 0.5,
           minTrackingConfidence: 0.5,
         });
+        console.log("[MP] 8. ✅ landmarker creato");
 
         if (cancelled) {
           landmarker.close();
@@ -80,15 +92,12 @@ export function useMediaPipe() {
         }
 
         landmarkerRef.current = landmarker;
-
-        // 3. Loop di rilevamento
         loop();
         setIsReady(true);
+        console.log("[MP] 9. ✅✅✅ READY");
       } catch (err) {
-        if (!cancelled) {
-          console.error("[useMediaPipe] init error:", err);
-          setError(err);
-        }
+        console.error("[MP] ❌ init error:", err);
+        if (!cancelled) setError(err);
       }
     }
 
