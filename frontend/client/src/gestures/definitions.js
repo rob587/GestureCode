@@ -54,3 +54,8 @@ export const GESTURE_ORDER = [
 
 // Array di id puri
 export const GESTURE_IDS = Object.values(GESTURES).map((g) => g.id);
+
+export function getGestureById(id) {
+  if (!id) return null;
+  return Object.values(GESTURES).find((g) => g.id === id) || null;
+}
