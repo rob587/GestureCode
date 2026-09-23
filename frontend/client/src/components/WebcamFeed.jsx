@@ -3,15 +3,18 @@
 // il ref non è disponibile quando useMediaPipe prova ad accedervi.
 
 import { useMediaPipe } from "../hooks/useMediaPipe.js";
+import { HandOverlay } from "./HandOverlay.jsx";
 
 export function WebcamFeed() {
-  const { videoRef, fps, isReady, handDetected, error } = useMediaPipe();
+  const { videoRef, landmarksRef, fps, isReady, handDetected, error } =
+    useMediaPipe();
 
   return (
     <div style={styles.container}>
       <div style={styles.videoWrapper}>
         {/* Video SEMPRE presente nel DOM */}
         <video ref={videoRef} style={styles.video} autoPlay playsInline muted />
+        <HandOverlay landmarksRef={landmarksRef} />
 
         {/* Overlay di caricamento */}
         {!isReady && !error && (
