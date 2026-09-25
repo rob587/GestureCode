@@ -84,3 +84,109 @@ export function TutorialStep({
     </div>
   );
 }
+
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 16,
+    padding: "24px 16px",
+    color: "#e5e7eb",
+    textAlign: "center",
+    maxWidth: 480,
+    margin: "0 auto",
+    fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+  },
+
+  stepCounter: {
+    fontSize: 13,
+    color: "#9ca3af",
+    fontFamily: "monospace",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+  },
+
+  gestureEmoji: {
+    fontSize: 96,
+    lineHeight: 1,
+    transition: "transform 0.2s, filter 0.2s",
+    userSelect: "none",
+  },
+
+  gestureLabel: {
+    fontSize: 24,
+    fontWeight: 700,
+    letterSpacing: 0.5,
+  },
+
+  hint: {
+    fontSize: 14,
+    color: "#9ca3af",
+    maxWidth: 360,
+    lineHeight: 1.5,
+    transition: "opacity 0.3s",
+  },
+
+  confirmWrapper: {
+    width: "100%",
+    maxWidth: 360,
+    marginTop: 8,
+  },
+
+  confirmBar: {
+    width: "100%",
+    height: 8,
+    background: "rgba(255,255,255,0.08)",
+    borderRadius: 999,
+    overflow: "hidden",
+  },
+
+  confirmFill: {
+    height: "100%",
+    borderRadius: 999,
+    transition: "width 0.1s linear, background 0.2s",
+  },
+
+  confirmText: {
+    marginTop: 8,
+    fontSize: 12,
+    color: "#9ca3af",
+    fontFamily: "monospace",
+  },
+
+  hintBox: {
+    marginTop: 8,
+    padding: "10px 14px",
+    background: "rgba(59, 130, 246, 0.12)",
+    border: "1px solid rgba(59, 130, 246, 0.3)",
+    borderRadius: 8,
+    fontSize: 13,
+    color: "#93c5fd",
+    maxWidth: 360,
+  },
+
+  // Completato
+  completedBox: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 12,
+    padding: 32,
+  },
+  completedEmoji: {
+    fontSize: 72,
+    lineHeight: 1,
+  },
+  completedTitle: {
+    fontSize: 24,
+    fontWeight: 700,
+    color: "#4ade80",
+  },
+  completedText: {
+    fontSize: 14,
+    color: "#9ca3af",
+    maxWidth: 360,
+    lineHeight: 1.5,
+  },
+};

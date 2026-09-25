@@ -3,109 +3,112 @@
 // il ref non è disponibile quando useMediaPipe prova ad accedervi.
 
 import { useMediaPipe } from "../hooks/useMediaPipe.js";
-import { HandOverlay } from "./HandOverlay.jsx";
 import { useGestureDetector } from "../hooks/useGestureDetector.js";
-import { GESTURES } from "../gestures/definitions.js";
+import { useTutorial } from "../hooks/useTutorial.js";
+import { HandOverlay } from "./HandOverlay.jsx";
+import { TutorialStep } from "./TutorialStep.jsx";
 import { getGestureById } from "../gestures/definitions.js";
 
 export function WebcamFeed() {
   const { videoRef, landmarksRef, fps, isReady, handDetected, error } =
     useMediaPipe();
+
   const { currentGestureId, confirmedGestureId, progress } = useGestureDetector(
     {
       landmarksRef,
       enabled: isReady,
     },
   );
+
+  const {
+    currentStep,
+    stepIndex,
+    totalSteps,
+    isCompleted,
+    isHintVisible,
+    isCorrectGesture,
+  } = useTutorial({
+    confirmedGestureId,
+    enabled: isReady,
+  });
+
   const currentGesture = getGestureById(currentGestureId);
 
   return (
-    <>
-      <div style={styles.container}>
-        <div style={styles.videoWrapper}>
-          {/* Video SEMPRE presente nel DOM */}
-          <video
-            ref={videoRef}
-            style={styles.video}
-            autoPlay
-            playsInline
-            muted
-          />
-          <HandOverlay landmarksRef={landmarksRef} />
+    <div style={styles.container}>
+      <div style={styles.videoWrapper}>
+        {/* Video SEMPRE presente nel DOM */}
+        <video ref={videoRef} style={styles.video} autoPlay playsInline muted />
+        <HandOverlay landmarksRef={landmarksRef} />
 
-          {/* Overlay di caricamento */}
-          {!isReady && !error && (
-            <div style={styles.overlay}>
-              <div style={styles.spinner} />
-              <div style={styles.overlayText}>Avvio webcam e modello...</div>
-            </div>
-          )}
-
-          {/* Overlay di errore */}
-          {error && (
-            <div style={styles.overlay}>
-              <div style={styles.errorEmoji}>⚠️</div>
-              <div style={styles.errorTitle}>Impossibile avviare la webcam</div>
-              <div style={styles.errorText}>
-                {error.name === "NotAllowedError"
-                  ? "Hai negato il permesso. Ricarica la pagina e concedi l'accesso alla webcam."
-                  : error.message || "Errore sconosciuto."}
-              </div>
-            </div>
-          )}
-
-          {/* HUD quando è pronto */}
-          {isReady && (
-            <div style={styles.hud}>
-              <div style={styles.hudRow}>
-                <span style={styles.hudLabel}>FPS</span>
-                <span style={styles.hudValue}>{fps}</span>
-              </div>
-              <div style={styles.hudRow}>
-                <span style={styles.hudLabel}>Mano</span>
-                <span
-                  style={{
-                    ...styles.hudValue,
-                    color: handDetected ? "#4ade80" : "#f87171",
-                  }}
-                >
-                  {handDetected ? "● rilevata" : "○ assente"}
-                </span>
-              </div>
-            </div>
-          )}
-          <div style={styles.hudRow}>
-            <span style={styles.hudLabel}>Gesto</span>
-            <span style={styles.hudValue}>
-              {currentGesture
-                ? `${currentGesture.emoji} ${currentGesture.label}`
-                : "—"}
-            </span>
+        {/* Overlay di caricamento */}
+        {!isReady && !error && (
+          <div style={styles.overlay}>
+            <div style={styles.spinner} />
+            <div style={styles.overlayText}>Avvio webcam e modello...</div>
           </div>
-          <div style={styles.hudRow}>
-            <span style={styles.hudLabel}>Conf</span>
-            <span style={styles.hudValue}>{Math.round(progress * 100)}%</span>
+        )}
+
+        {/* Overlay di errore */}
+        {error && (
+          <div style={styles.overlay}>
+            <div style={styles.errorEmoji}>⚠️</div>
+            <div style={styles.errorTitle}>Impossibile avviare la webcam</div>
+            <div style={styles.errorText}>
+              {error.name === "NotAllowedError"
+                ? "Hai negato il permesso. Ricarica la pagina e concedi l'accesso alla webcam."
+                : error.message || "Errore sconosciuto."}
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* HUD quando è pronto */}
+        {isReady && (
+          <div style={styles.hud}>
+            <div style={styles.hudRow}>
+              <span style={styles.hudLabel}>FPS</span>
+              <span style={styles.hudValue}>{fps}</span>
+            </div>
+            <div style={styles.hudRow}>
+              <span style={styles.hudLabel}>Mano</span>
+              <span
+                style={{
+                  ...styles.hudValue,
+                  color: handDetected ? "#4ade80" : "#f87171",
+                }}
+              >
+                {handDetected ? "● rilevata" : "○ assente"}
+              </span>
+            </div>
+            <div style={styles.hudRow}>
+              <span style={styles.hudLabel}>Gesto</span>
+              <span style={styles.hudValue}>
+                {currentGesture
+                  ? `${currentGesture.emoji} ${currentGesture.label}`
+                  : "—"}
+              </span>
+            </div>
+            <div style={styles.hudRow}>
+              <span style={styles.hudLabel}>Conf</span>
+              <span style={styles.hudValue}>{Math.round(progress * 100)}%</span>
+            </div>
+          </div>
+        )}
       </div>
 
-      <div style={styles.hudRow}>
-        <span style={styles.hudLabel}>Gesto</span>
-        <span style={styles.hudValue}>
-          {currentGestureId
-            ? GESTURES[
-                Object.keys(GESTURES).find(
-                  (k) => GESTURES[k].id === currentGestureId,
-                )
-              ]?.emoji
-            : "—"}
-        </span>
-      </div>
-      <div style={styles.hudRow}>
-        <span style={styles.hudLabel}>Conf</span>
-        <span style={styles.hudValue}>{Math.round(progress * 100)}%</span>
-      </div>
-    </>
+      {/* Tutorial sotto il video */}
+      {isReady && (
+        <TutorialStep
+          currentStep={currentStep}
+          stepIndex={stepIndex}
+          totalSteps={totalSteps}
+          isCompleted={isCompleted}
+          isHintVisible={isHintVisible}
+          isCorrectGesture={isCorrectGesture}
+          progress={progress}
+        />
+      )}
+    </div>
   );
 }
 
