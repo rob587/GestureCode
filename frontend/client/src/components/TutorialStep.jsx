@@ -1,4 +1,5 @@
 import { GestureAnimation } from "./GestureAnimation.jsx";
+import { ProgressBar, StepProgress } from "./ProgressBar.jsx";
 
 export function TutorialStep({
   currentStep,
@@ -30,10 +31,7 @@ export function TutorialStep({
 
   return (
     <div style={styles.container}>
-      {/* Progress step (3/6) */}
-      <div style={styles.stepCounter}>
-        Step <strong>{stepIndex + 1}</strong> / {totalSteps}
-      </div>
+      <StepProgress current={stepIndex + 1} total={totalSteps} />
 
       <GestureAnimation gesture={gesture} isCorrect={isCorrectGesture} />
 
@@ -46,24 +44,18 @@ export function TutorialStep({
         {gesture.hint}
       </div>
 
-      <div style={styles.confirmWrapper}>
-        <div style={styles.confirmBar}>
-          <div
-            style={{
-              ...styles.confirmFill,
-              width: `${Math.min(progress * 100, 100)}%`,
-              background: isCorrectGesture ? "#4ade80" : "#3b82f6",
-            }}
-          />
-        </div>
-        <div style={styles.confirmText}>
-          {isCorrectGesture
+      {/* Progress bar di conferma */}
+      <ProgressBar
+        value={progress}
+        color={isCorrectGesture ? "#4ade80" : "#3b82f6"}
+        label={
+          isCorrectGesture
             ? "✅ Gesto corretto!"
             : progress > 0
               ? `Tieni il gesto... ${Math.round(progress * 100)}%`
-              : "Fai il gesto davanti alla webcam"}
-        </div>
-      </div>
+              : "Fai il gesto davanti alla webcam"
+        }
+      />
 
       {isHintVisible && !isCorrectGesture && (
         <div style={styles.hintBox}>
@@ -89,14 +81,6 @@ const styles = {
     fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
   },
 
-  stepCounter: {
-    fontSize: 13,
-    color: "#9ca3af",
-    fontFamily: "monospace",
-    letterSpacing: 1,
-    textTransform: "uppercase",
-  },
-
   gestureEmoji: {
     fontSize: 96,
     lineHeight: 1,
@@ -116,33 +100,6 @@ const styles = {
     maxWidth: 360,
     lineHeight: 1.5,
     transition: "opacity 0.3s",
-  },
-
-  confirmWrapper: {
-    width: "100%",
-    maxWidth: 360,
-    marginTop: 8,
-  },
-
-  confirmBar: {
-    width: "100%",
-    height: 8,
-    background: "rgba(255,255,255,0.08)",
-    borderRadius: 999,
-    overflow: "hidden",
-  },
-
-  confirmFill: {
-    height: "100%",
-    borderRadius: 999,
-    transition: "width 0.1s linear, background 0.2s",
-  },
-
-  confirmText: {
-    marginTop: 8,
-    fontSize: 12,
-    color: "#9ca3af",
-    fontFamily: "monospace",
   },
 
   hintBox: {
