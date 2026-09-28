@@ -1,3 +1,5 @@
+import { GestureAnimation } from "./GestureAnimation.jsx";
+
 export function TutorialStep({
   currentStep,
   stepIndex,
@@ -33,19 +35,7 @@ export function TutorialStep({
         Step <strong>{stepIndex + 1}</strong> / {totalSteps}
       </div>
 
-      <div
-        style={{
-          ...styles.gestureEmoji,
-          transform: isCorrectGesture ? "scale(1.15)" : "scale(1)",
-          filter: isCorrectGesture
-            ? "drop-shadow(0 0 24px rgba(74, 222, 128, 0.8))"
-            : "drop-shadow(0 0 8px rgba(255,255,255,0.1))",
-        }}
-      >
-        {gesture.emoji}
-      </div>
-
-      <div style={styles.gestureLabel}>{gesture.label}</div>
+      <GestureAnimation gesture={gesture} isCorrect={isCorrectGesture} />
 
       <div
         style={{
