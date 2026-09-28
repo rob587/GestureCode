@@ -54,3 +54,58 @@ export function StepProgress({ current, total }) {
     </div>
   );
 }
+
+const styles = {
+  wrapper: {
+    width: "100%",
+  },
+
+  track: {
+    width: "100%",
+    background: "rgba(255,255,255,0.08)",
+    borderRadius: 999,
+    overflow: "hidden",
+  },
+
+  fill: {
+    height: "100%",
+    borderRadius: 999,
+  },
+
+  label: {
+    marginTop: 8,
+    fontSize: 12,
+    color: "#9ca3af",
+    fontFamily: "monospace",
+    textAlign: "center",
+  },
+
+  // StepProgress
+  stepWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 8,
+  },
+
+  stepText: {
+    fontSize: 13,
+    color: "#9ca3af",
+    fontFamily: "monospace",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+  },
+
+  dots: {
+    display: "flex",
+    gap: 8,
+    alignItems: "center",
+  },
+
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: "50%",
+    transition: "background 0.3s, transform 0.3s, box-shadow 0.3s",
+  },
+};
