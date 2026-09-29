@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 
 const FLASH_DURATION_MS = 900;
 
-const SuccessFlash = ({ trigger, gesture = null }) => {
+export function SuccessFlash({ trigger, gesture = null }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     if (!trigger) return;
+
     setIsVisible(true);
 
     const timer = setTimeout(() => {
@@ -19,25 +20,25 @@ const SuccessFlash = ({ trigger, gesture = null }) => {
   if (!isVisible) return null;
 
   return (
-    <>
-      <div style={styles.overlay}>
-        <div style={styles.wave} />
+    <div style={styles.overlay}>
+      {/* Onda che si espande */}
+      <div style={styles.wave} />
 
-        <div style={styles.content}>
-          <div style={styles.check}>✅</div>
-          <div style={styles.title}>Gesto corretto!</div>
-          {gesture && (
-            <div style={styles.subtitle}>
-              {gesture.emoji} {gesture.label}
-            </div>
-          )}
-        </div>
+      {/* Check + testo */}
+      <div style={styles.content}>
+        <div style={styles.check}>✅</div>
+        <div style={styles.title}>Gesto corretto!</div>
+        {gesture && (
+          <div style={styles.subtitle}>
+            {gesture.emoji} {gesture.label}
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
-};
+}
 
-export default SuccessFlash;
+// --- Stili ---
 
 const styles = {
   overlay: {

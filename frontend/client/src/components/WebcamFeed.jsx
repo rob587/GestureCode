@@ -9,7 +9,7 @@ import { HandOverlay } from "./HandOverlay.jsx";
 import { TutorialStep } from "./TutorialStep.jsx";
 import { getGestureById } from "../gestures/definitions.js";
 import { useState, useEffect } from "react";
-import { SuccessFlash } from "./SuccessFlash.jsx";
+import { SuccessFlash } from "../components/SuccessFlash.jsx";
 
 export function WebcamFeed() {
   const { videoRef, landmarksRef, fps, isReady, handDetected, error } =
@@ -103,6 +103,7 @@ export function WebcamFeed() {
             </div>
           </div>
         )}
+        <SuccessFlash trigger={flashTrigger} gesture={currentStep?.gesture} />
       </div>
 
       {/* Tutorial sotto il video */}
