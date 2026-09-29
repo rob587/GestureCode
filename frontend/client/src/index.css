@@ -32,3 +32,40 @@
     transform: scale(1.1);
   }
 }
+
+@keyframes flashFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes flashWave {
+  0% {
+    transform: scale(0.3);
+    opacity: 1;
+    border-width: 6px;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+@keyframes flashContent {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

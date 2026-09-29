@@ -8,6 +8,8 @@ import { useTutorial } from "../hooks/useTutorial.js";
 import { HandOverlay } from "./HandOverlay.jsx";
 import { TutorialStep } from "./TutorialStep.jsx";
 import { getGestureById } from "../gestures/definitions.js";
+import { useState, useEffect } from "react";
+import { SuccessFlash } from "./SuccessFlash.jsx";
 
 export function WebcamFeed() {
   const { videoRef, landmarksRef, fps, isReady, handDetected, error } =
@@ -19,6 +21,7 @@ export function WebcamFeed() {
       enabled: isReady,
     },
   );
+  const [flashTrigger, setFlashTrigger] = useState(0);
 
   const {
     currentStep,
@@ -33,6 +36,12 @@ export function WebcamFeed() {
   });
 
   const currentGesture = getGestureById(currentGestureId);
+
+  useEffect(() => {
+    if (isCorrectGesture) {
+      setFlashTrigger((t) => t + 1);
+    }
+  }, [isCorrectGesture]);
 
   return (
     <div style={styles.container}>
