@@ -10,6 +10,7 @@ import { TutorialStep } from "./TutorialStep.jsx";
 import { getGestureById } from "../gestures/definitions.js";
 import { useState, useEffect } from "react";
 import { SuccessFlash } from "../components/SuccessFlash.jsx";
+import { StatsHUD } from "./StatsHUD.jsx";
 
 export function WebcamFeed() {
   const { videoRef, landmarksRef, fps, isReady, handDetected, error } =
@@ -106,16 +107,15 @@ export function WebcamFeed() {
         <SuccessFlash trigger={flashTrigger} gesture={currentStep?.gesture} />
       </div>
 
-      {/* Tutorial sotto il video */}
+      {/* HUD quando è pronto */}
       {isReady && (
-        <TutorialStep
-          currentStep={currentStep}
+        <StatsHUD
+          fps={fps}
+          handDetected={handDetected}
+          currentGesture={currentGesture}
+          progress={progress}
           stepIndex={stepIndex}
           totalSteps={totalSteps}
-          isCompleted={isCompleted}
-          isHintVisible={isHintVisible}
-          isCorrectGesture={isCorrectGesture}
-          progress={progress}
         />
       )}
     </div>
@@ -183,35 +183,5 @@ const styles = {
     color: "#9ca3af",
     fontSize: 13,
     maxWidth: 400,
-  },
-
-  // HUD
-  hud: {
-    position: "absolute",
-    top: 12,
-    left: 12,
-    display: "flex",
-    flexDirection: "column",
-    gap: 4,
-    padding: "8px 12px",
-    background: "rgba(0, 0, 0, 0.6)",
-    borderRadius: 8,
-    fontFamily: "monospace",
-    fontSize: 12,
-    color: "#e5e7eb",
-    backdropFilter: "blur(4px)",
-  },
-  hudRow: {
-    display: "flex",
-    gap: 8,
-    alignItems: "center",
-  },
-  hudLabel: {
-    opacity: 0.6,
-    minWidth: 40,
-  },
-  hudValue: {
-    fontWeight: "bold",
-    color: "#e5e7eb",
   },
 };
