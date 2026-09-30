@@ -1,0 +1,176 @@
+/* ============================================================
+   GestureCode — Stili globali
+   Variabili, reset, keyframes. Importato in main.jsx.
+   ============================================================ */
+
+/* --- Variabili tema --------------------------------------- */
+
+:root {
+  /* Colori base */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-panel: rgba(0, 0, 0, 0.65);
+
+  /* Testo */
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  /* Accenti */
+  --accent-green: #4ade80;
+  --accent-blue: #3b82f6;
+  --accent-yellow: #facc15;
+  --accent-red: #f87171;
+  --accent-green-soft: rgba(74, 222, 128, 0.2);
+  --accent-blue-soft: rgba(59, 130, 246, 0.2);
+
+  /* Bordi */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-medium: rgba(255, 255, 255, 0.12);
+
+  /* Raggi */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  /* Font */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", "Consolas", "Monaco", monospace;
+
+  /* Timing */
+  --t-fast: 0.15s;
+  --t-base: 0.25s;
+  --t-slow: 0.5s;
+}
+
+/* --- Reset minimale --------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* --- Keyframes -------------------------------------------- */
+
+/* Spinner (loading) */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* GestureAnimation: emoji che pulsa */
+@keyframes gesturePulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+/* GestureAnimation: pop di conferma */
+@keyframes gestureSuccess {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* GestureAnimation: alone che respira */
+@keyframes haloPulse {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* SuccessFlash: fade in overlay */
+@keyframes flashFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* SuccessFlash: onda che si espande */
+@keyframes flashWave {
+  0% {
+    transform: scale(0.3);
+    opacity: 1;
+    border-width: 6px;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+/* SuccessFlash: contenuto che appare con pop */
+@keyframes flashContent {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* --- Utility classes (opzionali, per il futuro) ----------- */
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

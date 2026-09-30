@@ -49,6 +49,7 @@ export function WebcamFeed() {
       <div style={styles.videoWrapper}>
         {/* Video SEMPRE presente nel DOM */}
         <video ref={videoRef} style={styles.video} autoPlay playsInline muted />
+
         <HandOverlay landmarksRef={landmarksRef} />
 
         {/* Overlay di caricamento */}
@@ -72,52 +73,34 @@ export function WebcamFeed() {
           </div>
         )}
 
-        {/* HUD quando è pronto */}
+        {/* HUD stats (dentro videoWrapper, position: absolute) */}
         {isReady && (
-          <div style={styles.hud}>
-            <div style={styles.hudRow}>
-              <span style={styles.hudLabel}>FPS</span>
-              <span style={styles.hudValue}>{fps}</span>
-            </div>
-            <div style={styles.hudRow}>
-              <span style={styles.hudLabel}>Mano</span>
-              <span
-                style={{
-                  ...styles.hudValue,
-                  color: handDetected ? "#4ade80" : "#f87171",
-                }}
-              >
-                {handDetected ? "● rilevata" : "○ assente"}
-              </span>
-            </div>
-            <div style={styles.hudRow}>
-              <span style={styles.hudLabel}>Gesto</span>
-              <span style={styles.hudValue}>
-                {currentGesture
-                  ? `${currentGesture.emoji} ${currentGesture.label}`
-                  : "—"}
-              </span>
-            </div>
-            <div style={styles.hudRow}>
-              <span style={styles.hudLabel}>Conf</span>
-              <span style={styles.hudValue}>{Math.round(progress * 100)}%</span>
-            </div>
-          </div>
+          <StatsHUD
+            fps={fps}
+            handDetected={handDetected}
+            currentGesture={currentGesture}
+            progress={progress}
+            stepIndex={stepIndex}
+            totalSteps={totalSteps}
+          />
         )}
-        <SuccessFlash trigger={flashTrigger} gesture={currentStep?.gesture} />
       </div>
 
-      {/* HUD quando è pronto */}
+      {/* Tutorial sotto il video */}
       {isReady && (
-        <StatsHUD
-          fps={fps}
-          handDetected={handDetected}
-          currentGesture={currentGesture}
-          progress={progress}
+        <TutorialStep
+          currentStep={currentStep}
           stepIndex={stepIndex}
           totalSteps={totalSteps}
+          isCompleted={isCompleted}
+          isHintVisible={isHintVisible}
+          isCorrectGesture={isCorrectGesture}
+          progress={progress}
         />
       )}
+
+      {/* Flash di conferma (a tutto schermo) */}
+      <SuccessFlash trigger={flashTrigger} gesture={currentStep?.gesture} />
     </div>
   );
 }
