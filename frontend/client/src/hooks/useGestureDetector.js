@@ -31,6 +31,7 @@ export function useGestureDetector({
   // State React (bassa frequenza, per UI)
   const [currentGestureId, setCurrentGestureId] = useState(null);
   const [confirmedGestureId, setConfirmedGestureId] = useState(null);
+  const [confirmationCount, setConfirmationCount] = useState(0);
   const [progress, setProgress] = useState(0);
 
   // Init state machine una volta sola
@@ -67,6 +68,7 @@ export function useGestureDetector({
       // Gesture CONFERMATO → aggiorna state
       if (result.status === "confirmed") {
         setConfirmedGestureId(result.gesture);
+        setConfirmationCount((c) => c + 1);
       }
 
       // Aggiorna UI a bassa frequenza
@@ -97,12 +99,14 @@ export function useGestureDetector({
     setCurrentGestureId(null);
     setConfirmedGestureId(null);
     setProgress(0);
+    setConfirmationCount(0);
   }
 
   return {
     currentGestureRef,
     currentGestureId,
     confirmedGestureId,
+    confirmationCount,
     progress,
     reset,
   };
