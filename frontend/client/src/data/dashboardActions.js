@@ -42,3 +42,22 @@ export const DASHBOARD_ACTIONS = {
     description: "Riporta tutto allo stato iniziale",
   },
 };
+
+export const DASHBOARD_ACTIONS_LIST = [
+  DASHBOARD_ACTIONS.OPEN_PALM,
+  DASHBOARD_ACTIONS.FIST,
+  DASHBOARD_ACTIONS.INDEX_UP,
+  DASHBOARD_ACTIONS.INDEX_DOWN,
+  DASHBOARD_ACTIONS.PINCH,
+  DASHBOARD_ACTIONS.SHAKA,
+];
+
+export function getActionByGestureId(gestureId) {
+  if (!gestureId) return null;
+  return DASHBOARD_ACTIONS_LIST.find((a) => a.gestureId === gestureId) || null;
+}
+
+export function getActionByType(type) {
+  if (!type) return null;
+  return DASHBOARD_ACTIONS_LIST.find((a) => a.type === type) || null;
+}
