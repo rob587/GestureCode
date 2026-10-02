@@ -61,4 +61,39 @@ export function useDashboard({ confirmedGestureId, confirmationCount } = {}) {
     setResetCount((c) => c + 1);
     return "reset";
   }
+
+  useEffect(() => {
+    if (!confirmedGestureId || !confirmationCount) return;
+
+    const action = getActionByGestureId(confirmedGestureId);
+    if (!action) return;
+
+    let executed = null;
+    switch (action.type) {
+      case "toggle_play":
+        executed = togglePlay();
+        break;
+      case "select_item":
+        executed = selectItem();
+        break;
+      case "scroll_up":
+        executed = scrollUp();
+        break;
+      case "scroll_down":
+        executed = scrollDown();
+        break;
+      case "zoom_in":
+        executed = zoom();
+        break;
+      case "reset":
+        executed = reset();
+        break;
+      default:
+        break;
+    }
+
+    if (executed) {
+      setLastAction({ type: executed, timestamp: performance.now() });
+    }
+  }, [confirmationCount]);
 }
