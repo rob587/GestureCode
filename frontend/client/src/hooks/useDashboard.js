@@ -24,4 +24,41 @@ export function useDashboard({ confirmedGestureId, confirmationCount } = {}) {
   const [lastAction, setLastAction] = useState(null);
 
   const items = useRef(buildItems()).current;
+
+  function togglePlay() {
+    setIsPlaying((p) => !p);
+    return "toggle_play";
+  }
+
+  function selectItem() {
+    setSelectedIndex(scrollIndex);
+    return "select_item";
+  }
+
+  function scrollUp() {
+    setScrollIndex((i) => Math.max(0, i - 1));
+    return "scroll_up";
+  }
+
+  function scrollDown() {
+    setScrollIndex((i) => Math.min(items.length - 1, i + 1));
+    return "scroll_down";
+  }
+
+  function zoom() {
+    setZoomLevel((z) => {
+      const next = z + ZOOM_STEP;
+      return next > ZOOM_MAX ? ZOOM_MIN : next;
+    });
+    return "zoom";
+  }
+
+  function reset() {
+    setZoomLevel(1.0);
+    setIsPlaying(true);
+    setScrollIndex(0);
+    setSelectedIndex(0);
+    setResetCount((c) => c + 1);
+    return "reset";
+  }
 }
