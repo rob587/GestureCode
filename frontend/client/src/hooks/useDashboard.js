@@ -14,3 +14,14 @@ function buildItems() {
     label: `Elemento ${i + 1}`,
   }));
 }
+
+export function useDashboard({ confirmedGestureId, confirmationCount } = {}) {
+  const [zoomLevel, setZoomLevel] = useState(1.0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [scrollIndex, setScrollIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [resetCount, setResetCount] = useState(0);
+  const [lastAction, setLastAction] = useState(null);
+
+  const items = useRef(buildItems()).current;
+}
