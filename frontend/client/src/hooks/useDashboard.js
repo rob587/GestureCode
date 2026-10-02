@@ -96,4 +96,25 @@ export function useDashboard({ confirmedGestureId, confirmationCount } = {}) {
       setLastAction({ type: executed, timestamp: performance.now() });
     }
   }, [confirmationCount]);
+
+  return {
+    zoomLevel,
+    isPlaying,
+    scrollIndex,
+    selectedIndex,
+    resetCount,
+    items,
+    lastAction,
+
+    togglePlay,
+    selectItem,
+    scrollUp,
+    scrollDown,
+    zoom,
+    reset,
+
+    ZOOM_MIN,
+    ZOOM_MAX,
+    ZOOM_STEP,
+  };
 }

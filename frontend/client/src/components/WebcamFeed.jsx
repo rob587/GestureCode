@@ -16,12 +16,11 @@ export function WebcamFeed() {
   const { videoRef, landmarksRef, fps, isReady, handDetected, error } =
     useMediaPipe();
 
-  const { currentGestureId, confirmedGestureId, progress } = useGestureDetector(
-    {
+  const { currentGestureId, confirmedGestureId, confirmationCount, progress } =
+    useGestureDetector({
       landmarksRef,
       enabled: isReady,
-    },
-  );
+    });
   const [flashTrigger, setFlashTrigger] = useState(0);
 
   const {
