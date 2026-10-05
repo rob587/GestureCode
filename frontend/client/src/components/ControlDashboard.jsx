@@ -13,6 +13,7 @@ export function ControlDashboard({
   ZOOM_MAX,
   // Dati dal detector (per mostrare gesto corrente)
   currentGestureId,
+  onBackToTutorial,
 }) {
   const zoomPercent = (zoomLevel - ZOOM_MIN) / (ZOOM_MAX - ZOOM_MIN);
   const currentAction = getActionByGestureId(currentGestureId);
@@ -21,7 +22,18 @@ export function ControlDashboard({
     <div style={styles.dashboard}>
       {/* Header */}
       <div style={styles.header}>
-        <h2 style={styles.title}>🎛️ Control Dashboard</h2>
+        <div style={styles.headerTop}>
+          <h2 style={styles.title}>🎛️ Control Dashboard</h2>
+          {onBackToTutorial && (
+            <button
+              style={styles.backButton}
+              onClick={onBackToTutorial}
+              title="Torna al tutorial"
+            >
+              ← Tutorial
+            </button>
+          )}
+        </div>
         <p style={styles.subtitle}>Usa i gesti per controllare gli elementi</p>
       </div>
 
@@ -401,5 +413,25 @@ const styles = {
     fontSize: 10,
     color: "#9ca3af",
     fontFamily: "monospace",
+  },
+
+  headerTop: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+
+  backButton: {
+    padding: "6px 12px",
+    fontSize: 12,
+    fontWeight: 600,
+    color: "#9ca3af",
+    background: "rgba(255,255,255,0.05)",
+    border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: 6,
+    cursor: "pointer",
+    transition: "background 0.2s, color 0.2s",
+    fontFamily: "inherit",
   },
 };
