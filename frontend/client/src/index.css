@@ -69,3 +69,12 @@
     opacity: 1;
   }
 }
+
+@keyframes playPingPong {
+  0% {
+    left: 4px;
+  }
+  100% {
+    left: calc(100% - 20px);
+  }
+}
